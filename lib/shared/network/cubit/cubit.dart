@@ -71,6 +71,11 @@ class AppCubit extends Cubit<AppStates>
     });
   }
 
+  Stream<List<UserModel>> readUsers () => FirebaseFirestore.instance
+      .collection('users')
+      .snapshots().map((snapshots) => snapshots.docs.map((doc) => UserModel.fromJson(doc.data())).toList()
+    );
+
   File? profileImage;
   final ImagePicker picker = ImagePicker();
 

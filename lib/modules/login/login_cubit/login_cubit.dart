@@ -6,7 +6,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginCubit extends Cubit<LoginStates>
 {
-  LoginCubit() : super(LoginLoadingState());
+  LoginCubit() : super(LoginInitialState());
 
   static LoginCubit get(context) => BlocProvider.of(context);
 

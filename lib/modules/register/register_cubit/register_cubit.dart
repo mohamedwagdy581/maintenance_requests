@@ -26,13 +26,14 @@ class RegisterCubit extends Cubit<RegisterStates>
     FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: email,
       password: password,
+
     ).then((value)
     {
 
       createUser(
-        name: value.user!.displayName.toString(),
+        name: name,
         email: value.user!.email.toString(),
-        phone: value.user!.phoneNumber.toString(),
+        phone: phone,
         uId: value.user!.uid.toString(),
         image: image.toString(),
         cover: '',

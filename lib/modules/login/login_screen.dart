@@ -136,17 +136,23 @@ class LoginScreen extends StatelessWidget {
                         ),
 
                         // Login Button
-                        defaultButton(
-                          onPressed: () {
-                            if(formKey.currentState!.validate())
-                            {
-                              LoginCubit.get(context).userLogin(
-                                email: emailController.text,
-                                password: passwordController.text,
-                              );
-                            }
-                          },
-                          text: 'Login',
+                        ConditionalBuilder(
+                          condition: state is! LoginLoadingState,
+                          builder: (context) =>
+                              defaultButton(
+                                onPressed: () {
+                                  if(formKey.currentState!.validate())
+                                  {
+                                    LoginCubit.get(context).userLogin(
+                                      email: emailController.text,
+                                      password: passwordController.text,
+                                    );
+                                  }
+                                },
+                                text: 'Login',
+                              ),
+                          fallback: (context) =>
+                          const Center(child: CircularProgressIndicator()),
                         ),
 
                         //SizedBox between Login Button and Don't have an account
