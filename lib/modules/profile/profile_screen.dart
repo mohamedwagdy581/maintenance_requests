@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maintenance/models/user_model.dart';
@@ -9,15 +10,11 @@ import '../../shared/network/cubit/states.dart';
 
 // ignore: must_be_immutable
 class ProfileScreen extends StatelessWidget {
-  ProfileScreen({Key? key}) : super(key: key);
-
-  var formKey = GlobalKey<FormState>();
-  late var emailController = TextEditingController();
-  late var nameController = TextEditingController();
-  late var phoneController = TextEditingController();
+  const ProfileScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Stream<QuerySnapshot> dataStream = FirebaseFirestore.instance.collection('users').snapshots();
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -27,16 +24,22 @@ class ProfileScreen extends StatelessWidget {
           appBar: AppBar(
             title: const Text('Profile'),
           ),
-          body: StreamBuilder<List<UserModel>> (
-            stream: AppCubit.get(context).readUsers(),
-            builder: (context, snapshot)
+          body: StreamBuilder<QuerySnapshot> (
+            stream: dataStream,
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot)
             {
               if(snapshot.hasError)
               {
-                return Text('Somthing Wrong! ${snapshot.error}');
+                return Text('Something Wrong! ${snapshot.error}');
               }else if(snapshot.hasData)
               {
-                final users = snapshot.data;
+                final List storeDocs = [];
+                snapshot.data!.docs.map((DocumentSnapshot documentSnapshot)
+                {
+                  Map users = documentSnapshot.data() as Map<String, dynamic>;
+                  storeDocs.add(users);
+                  users['uId'] = documentSnapshot.id;
+                }).toList();
                 return Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Column(
@@ -51,13 +54,13 @@ class ProfileScreen extends StatelessWidget {
                               child: Container(
                                 height: 140.0,
                                 width: double.infinity,
-                                decoration: const BoxDecoration(
-                                  borderRadius: BorderRadius.only(
+                                decoration: BoxDecoration(
+                                  borderRadius: const BorderRadius.only(
                                     topLeft: Radius.circular(4.0),
                                     topRight: Radius.circular(4.0),
                                   ),
                                   image: DecorationImage(
-                                    image: NetworkImage('https://img.freepik.com/free-photo/indecisive-girl-picks-from-two-choices-looks-questioned-troubled-crosses-hands-across-chest-hesitates-suggested-products-wears-yellow-t-shirt-isolated-crimson-wall_273609-42552.jpg?w=1380'),
+                                    image: NetworkImage(storeDocs.first['cover']),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -67,9 +70,9 @@ class ProfileScreen extends StatelessWidget {
                               radius: 64.0,
                               backgroundColor:
                               Theme.of(context).scaffoldBackgroundColor,
-                              child: const CircleAvatar(
+                              child: CircleAvatar(
                                 radius: 60.0,
-                                backgroundImage: NetworkImage('https://img.freepik.com/free-photo/wow-sale-there-amazed-redhead-girl-pointing-left-being-impressed-by-sale-announcement-showing-logo-standing-tshirt-against-white-background_176420-49239.jpg?t=st=1656577210~exp=1656577810~hmac=cc1cccdcd74eead3c597ae7f55984de886bf8c710457355ac173fc0a9ca3c542&w=1380'),
+                                backgroundImage: NetworkImage(storeDocs.first['image']),
                               ),
                             ),
                           ],
@@ -79,14 +82,14 @@ class ProfileScreen extends StatelessWidget {
                         height: 5.0,
                       ),
                       Text(
-                        'userModel!.name!',
+                        storeDocs.first['name'],
                         style: Theme.of(context).textTheme.bodyText1,
                       ),
                       const SizedBox(
                         height: 5.0,
                       ),
                       Text(
-                        'bio ...',
+                        storeDocs.first['bio'],
                         style: Theme.of(context).textTheme.caption,
                       ),
                       Padding(

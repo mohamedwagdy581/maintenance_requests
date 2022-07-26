@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_maintenance/models/user_model.dart';
 import 'package:flutter_maintenance/modules/chat/chat_screen.dart';
 import 'package:flutter_maintenance/modules/request_order/request_order_screen.dart';
@@ -76,12 +77,34 @@ class AppCubit extends Cubit<AppStates>
       .snapshots().map((snapshots) => snapshots.docs.map((doc) => UserModel.fromJson(doc.data())).toList()
     );
 
-  File? profileImage;
+  File? image;
+  Future pickImage() async
+  {
+    try{
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if(image == null) {
+        print('No Image Selected!');
+        emit(AppProfileImagePickedErrorState());
+        return;
+      }else
+      {
+        final imageTemporary = File(image.path);
+        this.image = imageTemporary;
+        emit(AppProfileImagePickedSuccessState());
+      }
+    } on PlatformException catch (error)
+    {
+      print('Failed to pick image ${error.toString()}');
+    }
+
+  }
+
+  /*File? profileImage;
   final ImagePicker picker = ImagePicker();
 
   Future getProfileImage() async
   {
-    final XFile? pickedFile = await picker.pickImage(source: ImageSource.gallery,);
+    final File? pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if(pickedFile != null)
     {
@@ -92,6 +115,6 @@ class AppCubit extends Cubit<AppStates>
       print('No Image Selected!');
       emit(AppProfileImagePickedErrorState());
     }
-  }
+  }*/
 
 }
