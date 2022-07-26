@@ -328,10 +328,10 @@ class _RequestOrderScreenState extends State<RequestOrderScreen> {
                               if(_formKey.currentState!.validate())
                               {
                                 final city = _cityValue.toString();
-                                final school = _cityValue.toString();
-                                final machine = _cityValue.toString();
-                                final machineType = _cityValue.toString();
-                                final consultation = _cityValue.toString();
+                                final school = _schoolValue.toString();
+                                final machine = _machineValue.toString();
+                                final machineType = _machineTypeValue.toString();
+                                final consultation = consultationController.text;
 
                                 RequestCubit.get(context).userRequest(
                                   city: city,
