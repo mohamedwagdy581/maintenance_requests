@@ -201,6 +201,7 @@ class EditProfileScreen extends StatelessWidget {
                           const SizedBox(
                             height: 15.0,
                           ),
+                          // Update Button
                           defaultButton(
                             onPressed: () async {
                               final String name = nameController.text;

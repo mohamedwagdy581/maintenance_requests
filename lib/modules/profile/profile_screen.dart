@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_maintenance/models/user_model.dart';
 import 'package:flutter_maintenance/modules/edit_profile/edit_profile_screen.dart';
 import 'package:flutter_maintenance/shared/components/components.dart';
 
@@ -18,8 +17,6 @@ class ProfileScreen extends StatelessWidget {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
-        var userModel = AppCubit.get(context).userModel;
-
         return Scaffold(
           appBar: AppBar(
             title: const Text('Profile'),
