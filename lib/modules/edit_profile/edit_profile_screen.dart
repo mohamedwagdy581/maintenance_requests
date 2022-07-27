@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,6 +55,13 @@ class EditProfileScreen extends StatelessWidget {
                   child: CircularProgressIndicator(),
                 );
               } else {
+                final List storeDocs = [];
+                snapshot.data!.docs.map((DocumentSnapshot documentSnapshot) {
+                  Map users = documentSnapshot.data() as Map<String, dynamic>;
+                  storeDocs.add(users);
+                  users['uId'] = documentSnapshot.id;
+                }).toList();
+
                 final DocumentSnapshot documentSnapshot =
                     snapshot.data!.docs.first;
                 return SingleChildScrollView(
@@ -75,23 +81,28 @@ class EditProfileScreen extends StatelessWidget {
                                   child: Stack(
                                     alignment: AlignmentDirectional.topEnd,
                                     children: [
-                                      Container(
-                                        height: 140.0,
+                                      SizedBox(
+                                        height: 150.0,
                                         width: double.infinity,
-                                        decoration: const BoxDecoration(
-                                          borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(4.0),
-                                            topRight: Radius.circular(4.0),
-                                          ),
-                                          image: DecorationImage(
-                                            image: NetworkImage(
-                                                'https://img.freepik.com/free-photo/indecisive-girl-picks-from-two-choices-looks-questioned-troubled-crosses-hands-across-chest-hesitates-suggested-products-wears-yellow-t-shirt-isolated-crimson-wall_273609-42552.jpg?w=1380'),
-                                            fit: BoxFit.cover,
-                                          ),
-                                        ),
+                                        child: AppCubit.get(context).coverImage !=
+                                                null
+                                            ? Image(
+                                              image: FileImage(
+                                                AppCubit.get(context)
+                                                    .coverImage!,
+                                              ),
+                                              fit: BoxFit.cover,
+                                            )
+                                            : Image(
+                                              image: NetworkImage(
+                                                  storeDocs.first['cover']),
+                                              fit: BoxFit.cover,
+                                            ),
                                       ),
                                       IconButton(
-                                        onPressed: () {},
+                                        onPressed: () {
+                                          AppCubit.get(context).pickCoverImage();
+                                        },
                                         icon: const CircleAvatar(
                                           radius: 20.0,
                                           child: Icon(
@@ -112,18 +123,24 @@ class EditProfileScreen extends StatelessWidget {
                                           .scaffoldBackgroundColor,
                                       child: CircleAvatar(
                                         radius: 60.0,
-                                        child:
-                                            AppCubit.get(context).image != null
-                                                ? CircleAvatar(
-                                                    radius: 60.0,
-                                                    backgroundImage: FileImage(AppCubit.get(context).image!),
-                                                  )
-                                                : const FlutterLogo(),
+                                        child: AppCubit.get(context).profileImage !=
+                                                null
+                                            ? CircleAvatar(
+                                                radius: 60.0,
+                                                backgroundImage: FileImage(
+                                                    AppCubit.get(context)
+                                                        .profileImage!),
+                                              )
+                                            : CircleAvatar(
+                                                radius: 60.0,
+                                                backgroundImage: NetworkImage(
+                                                    storeDocs.first['image']),
+                                              ),
                                       ),
                                     ),
                                     IconButton(
                                       onPressed: () {
-                                        AppCubit.get(context).pickImage();
+                                        AppCubit.get(context).pickProfileImage();
                                       },
                                       icon: const CircleAvatar(
                                         radius: 20.0,
@@ -137,6 +154,21 @@ class EditProfileScreen extends StatelessWidget {
                                 ),
                               ],
                             ),
+                          ),
+
+                          const SizedBox(
+                            height: 5.0,
+                          ),
+                          Text(
+                            storeDocs.last['name'],
+                            style: Theme.of(context).textTheme.bodyText1,
+                          ),
+                          const SizedBox(
+                            height: 5.0,
+                          ),
+                          Text(
+                            storeDocs.last['bio'],
+                            style: Theme.of(context).textTheme.caption,
                           ),
                           const SizedBox(
                             height: 20.0,
@@ -225,6 +257,7 @@ class EditProfileScreen extends StatelessWidget {
                               );
                             },
                             text: 'Update',
+                            backgroundColor: AppCubit.get(context).isDark ? Colors.deepOrange : Colors.blue,
                           ),
                         ],
                       ),
@@ -239,13 +272,3 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 }
-/*
-AppCubit.get(context).image !=
-null
-? Image.file(
-AppCubit.get(context).image!,
-fit: BoxFit.cover,
-width: 100,
-height: 100,
-)
-: const FlutterLogo(),*/

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_maintenance/modules/edit_profile/edit_profile_screen.dart';
+import 'package:flutter_maintenance/shared/network/cubit/cubit.dart';
 import 'package:flutter_maintenance/style/custom_icons.dart';
 
 import '../../shared/components/components.dart';
 import '../../shared/components/constants.dart';
-import '../profile/profile_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -21,16 +22,19 @@ class SettingsScreen extends StatelessWidget {
             ),
             child: ListTile(
               onTap: () {
-                navigateTo(context, ProfileScreen());
+                navigateTo(context, EditProfileScreen());
               },
-              leading: const Icon(
+              leading: Icon(
                 Icons.person,
-                color: Colors.blue,
+                color: AppCubit.get(context).isDark ? Colors.deepOrange : Colors.blue,
                 size: 35.0,
               ),
-              title: Text(
-                'My_Account',
-                style: Theme.of(context).textTheme.bodyText1,
+              title: const Text(
+                'My Account',
+                style: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               subtitle: Text(
                 'Edit your Account',
@@ -52,6 +56,7 @@ class SettingsScreen extends StatelessWidget {
                 signOut(context);
               },
               text: 'LOGOUT',
+              backgroundColor: AppCubit.get(context).isDark ? Colors.deepOrange : Colors.blue,
             ),
           ),
         ],

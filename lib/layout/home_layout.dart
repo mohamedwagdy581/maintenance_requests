@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_maintenance/modules/profile/profile_screen.dart';
+import 'package:flutter_maintenance/modules/edit_profile/edit_profile_screen.dart';
 import 'package:flutter_maintenance/shared/network/cubit/states.dart';
 import 'package:flutter_maintenance/style/custom_icons.dart';
 
@@ -17,26 +17,36 @@ class HomeLayout extends StatelessWidget {
       listener: (BuildContext context, state) {},
       builder: (BuildContext context, state) {
 
-
         var cubit = AppCubit.get(context);
 
         return Scaffold(
           appBar: AppBar(
             title: Text(cubit.appBarTitle[cubit.currentIndex]),
             actions: [
-              IconButton(
-                onPressed: (){},
-                icon: const Icon(
-                  CustomIcons.add_alert,
-                ),
-                padding: const EdgeInsets.only(right: 15.0),
-              ),
-              IconButton(
-                onPressed: (){},
-                icon: const Icon(
-                  CustomIcons.search,
-                ),
-                padding: const EdgeInsets.only(right: 15.0),
+              Row(
+                children: [
+                  Text(
+                      AppCubit.get(context).isDark
+                          ? 'Dark'
+                          : 'Light',
+                    style: Theme.of(context).textTheme.bodyText1,
+                  ),
+                  const SizedBox(
+                    width: 10.0,
+                  ),
+                  IconButton(
+                    onPressed: ()
+                    {
+                      AppCubit.get(context).changeAppModeTheme();
+                    },
+                    icon: const Icon(
+                      Icons.brightness_4_outlined,
+                      size: 30.0,
+                    ),
+                    padding: const EdgeInsets.only(right: 20.0),
+                  ),
+
+                ],
               ),
             ],
           ),
@@ -76,7 +86,7 @@ class HomeLayout extends StatelessWidget {
 
                 InkWell(
                   onTap: () {
-                    navigateTo(context, ProfileScreen());
+                    navigateTo(context, EditProfileScreen());
                   },
                   child: const ListTile(
                     title: Text('My_Account'),

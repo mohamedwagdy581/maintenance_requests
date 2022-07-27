@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 ThemeData darkTheme = ThemeData(
-  primarySwatch: Colors.blue,
+  primarySwatch: Colors.deepOrange,
   scaffoldBackgroundColor: HexColor('333739'),
   appBarTheme: AppBarTheme(
     systemOverlayStyle: SystemUiOverlayStyle(
@@ -14,7 +14,7 @@ ThemeData darkTheme = ThemeData(
     titleSpacing: 20.0,
     elevation: 0.0,
     iconTheme: const IconThemeData(
-      color: Colors.white,
+      color: Colors.deepOrangeAccent,
     ),
     titleTextStyle: const TextStyle(
       color: Colors.white,
@@ -25,7 +25,7 @@ ThemeData darkTheme = ThemeData(
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     type: BottomNavigationBarType.fixed,
     elevation: 20.0,
-    selectedItemColor: Colors.blue,
+    selectedItemColor: Colors.deepOrangeAccent,
     unselectedItemColor: Colors.grey,
     backgroundColor: HexColor('333739'),
   ),

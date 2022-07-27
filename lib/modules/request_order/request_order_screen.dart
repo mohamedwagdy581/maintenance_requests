@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maintenance/modules/request_order/requests_cubit/requests_cubit.dart';
 import 'package:flutter_maintenance/modules/request_order/requests_cubit/requests_states.dart';
+import 'package:flutter_maintenance/shared/network/cubit/cubit.dart';
 
 import '../../shared/components/components.dart';
 
@@ -10,19 +11,58 @@ class RequestOrderScreen extends StatefulWidget {
   const RequestOrderScreen({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _RequestOrderScreenState createState() => _RequestOrderScreenState();
 }
 
 class _RequestOrderScreenState extends State<RequestOrderScreen> {
-  var selectedType;
+  int _cityValue = 0;
+  String _city = '';
+  var cities = <String>[
+    'City?',
+    'Jazan',
+    'Sabia',
+    'Jeddah',
+    'Riyadh',
+    'Makkah',
+  ];
 
-  int _cityValue = 1;
+  int _schoolValue = 0;
+  String _school = '';
+  var schools = <String>[
+    'School?',
+    'Jazan School',
+    'Sabia School',
+    'Jeddah School',
+    'Riyadh School',
+    'Makkah School',
+    'Emmarah',
+  ];
 
-  int _schoolValue = 1;
+  int _machineValue = 0;
+  String _machine = '';
+  var machines = <String>[
+    'Machine?',
+    'Printer',
+    'Projector',
+    'Laptop',
+    'PC',
+    'Accessories',
+  ];
 
-  int _machineValue = 1;
-
-  int _machineTypeValue = 1;
+  int _machineTypeValue = 0;
+  String _machineType = '';
+  var machineTypes = <String>[
+    'Machine Type?',
+    'Lenovo',
+    'Apple',
+    'Samsung',
+    'Redmi',
+    'Dell',
+    'Sony',
+    'Toshiba',
+    'Sharp',
+  ];
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   var consultationController = TextEditingController();
@@ -37,12 +77,11 @@ class _RequestOrderScreenState extends State<RequestOrderScreen> {
     var height = MediaQuery.of(context).size.height;
     var width = MediaQuery.of(context).size.width;
     return BlocProvider(
-      create: (BuildContext context)  => RequestCubit(),
+      create: (BuildContext context) => RequestCubit(),
       child: BlocConsumer<RequestCubit, RequestStates>(
         listener: (context, state) {},
-        builder: (context,  state)
-        {
-          return  SingleChildScrollView(
+        builder: (context, state) {
+          return SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Form(
@@ -65,49 +104,21 @@ class _RequestOrderScreenState extends State<RequestOrderScreen> {
                             fontSize: 18.0,
                           ),
                         ),
-                        trailing: DropdownButton(
-                          value: _cityValue,
-                          borderRadius: BorderRadius.circular(15.0),
-                          items: const [
-                            DropdownMenuItem(
-                              value: 1,
-                              child: Text("City"),
-                            ),
-                            DropdownMenuItem(
-                              value: 2,
-                              child: Text("Jazan "),
-                            ),
-                            DropdownMenuItem(
-                              value: 3,
-                              child: Text("Emarah"),
-                            ),
-                            DropdownMenuItem(
-                              value: 4,
-                              child: Text("Sabia "),
-                            ),
-                            DropdownMenuItem(
-                              value: 5,
-                              child: Text("Edarah"),
-                            ),
-                            DropdownMenuItem(
-                              value: 6,
-                              child: Text("Jeddah "),
-                            ),
-                            DropdownMenuItem(
-                              value: 7,
-                              child: Text("Ryadh "),
-                            ),
-                            DropdownMenuItem(
-                              value: 8,
-                              child: Text("Other City"),
-                            ),
-                          ],
-                          onChanged: (int? value) {
+                        trailing: DropdownButton<String>(
+                          hint: const Text('City'),
+                          value: cities[_cityValue],
+                          items: cities.map((String city) {
+                            return DropdownMenuItem<String>(
+                              value: city.toString(),
+                              child: Text(city),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
                             setState(() {
-                              _cityValue = value!;
+                              _cityValue = cities.indexOf(value!);
+                              _city = value.toString();
                             });
                           },
-                          hint: const Text("Select School"),
                         ),
                       ),
                     ),
@@ -128,49 +139,21 @@ class _RequestOrderScreenState extends State<RequestOrderScreen> {
                             fontSize: 18.0,
                           ),
                         ),
-                        trailing: DropdownButton(
-                          value: _schoolValue,
-                          borderRadius: BorderRadius.circular(15.0),
-                          items: const [
-                            DropdownMenuItem(
-                              value: 1,
-                              child: Text("School"),
-                            ),
-                            DropdownMenuItem(
-                              value: 2,
-                              child: Text("Jazan School"),
-                            ),
-                            DropdownMenuItem(
-                              value: 3,
-                              child: Text("Emarah"),
-                            ),
-                            DropdownMenuItem(
-                              value: 4,
-                              child: Text("Sabia School"),
-                            ),
-                            DropdownMenuItem(
-                              value: 5,
-                              child: Text("Edarah"),
-                            ),
-                            DropdownMenuItem(
-                              value: 6,
-                              child: Text("Jeddah School"),
-                            ),
-                            DropdownMenuItem(
-                              value: 7,
-                              child: Text("Ryadh School"),
-                            ),
-                            DropdownMenuItem(
-                              value: 8,
-                              child: Text("Other School"),
-                            ),
-                          ],
-                          onChanged: (int? value) {
+                        trailing: DropdownButton<String>(
+                          hint: const Text('School'),
+                          value: schools[_schoolValue],
+                          items: schools.map((String school) {
+                            return DropdownMenuItem<String>(
+                              value: school,
+                              child: Text(school),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
                             setState(() {
-                              _schoolValue = value!;
+                              _schoolValue = schools.indexOf(value!);
+                              _school = value.toString();
                             });
                           },
-                          hint: const Text("Select School"),
                         ),
                       ),
                     ),
@@ -191,41 +174,21 @@ class _RequestOrderScreenState extends State<RequestOrderScreen> {
                             fontSize: 18.0,
                           ),
                         ),
-                        trailing: DropdownButton(
-                          value: _machineValue,
-                          borderRadius: BorderRadius.circular(15.0),
-                          items: const [
-                            DropdownMenuItem(
-                              value: 1,
-                              child: Text("Machine"),
-                            ),
-                            DropdownMenuItem(
-                              value: 2,
-                              child: Text("Printer"),
-                            ),
-                            DropdownMenuItem(
-                              value: 3,
-                              child: Text("Laptop"),
-                            ),
-                            DropdownMenuItem(
-                              value: 4,
-                              child: Text("PC"),
-                            ),
-                            DropdownMenuItem(
-                              value: 5,
-                              child: Text("Projector"),
-                            ),
-                            DropdownMenuItem(
-                              value: 6,
-                              child: Text("Accessories"),
-                            ),
-                          ],
-                          onChanged: (int? value) {
+                        trailing: DropdownButton<String>(
+                          hint: const Text('Machine'),
+                          value: machines[_machineValue],
+                          items: machines.map((String machine) {
+                            return DropdownMenuItem<String>(
+                              value: machine,
+                              child: Text(machine),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
                             setState(() {
-                              _machineValue = value!;
+                              _machineValue = machines.indexOf(value!);
+                              _machine = value.toString();
                             });
                           },
-                          hint: const Text("Select Machine"),
                         ),
                       ),
                     ),
@@ -246,49 +209,22 @@ class _RequestOrderScreenState extends State<RequestOrderScreen> {
                             fontSize: 18.0,
                           ),
                         ),
-                        trailing: DropdownButton(
-                          value: _machineTypeValue,
-                          borderRadius: BorderRadius.circular(15.0),
-                          items: const [
-                            DropdownMenuItem(
-                              value: 1,
-                              child: Text("Machine Type"),
-                            ),
-                            DropdownMenuItem(
-                              value: 2,
-                              child: Text("Lenovo"),
-                            ),
-                            DropdownMenuItem(
-                              value: 3,
-                              child: Text("Samsung"),
-                            ),
-                            DropdownMenuItem(
-                              value: 4,
-                              child: Text("Dell"),
-                            ),
-                            DropdownMenuItem(
-                              value: 5,
-                              child: Text("Apple"),
-                            ),
-                            DropdownMenuItem(
-                              value: 6,
-                              child: Text("Sony"),
-                            ),
-                            DropdownMenuItem(
-                              value: 7,
-                              child: Text("Redmi"),
-                            ),
-                            DropdownMenuItem(
-                              value: 8,
-                              child: Text("Toshiba"),
-                            ),
-                          ],
+                        trailing: DropdownButton<String>(
+                          hint: const Text('MachineType'),
+                          value: machineTypes[_machineTypeValue],
+                          items: machineTypes.map((String machineType) {
+                            return DropdownMenuItem<String>(
+                              value: machineType,
+                              child: Text(machineType),
+                            );
+                          }).toList(),
                           onChanged: (value) {
                             setState(() {
-                              _machineTypeValue = value!;
+                              _machineTypeValue = machineTypes.indexOf(value!);
+                              _machineType = value.toString();
+                              print(value.toString());
                             });
                           },
-                          hint: const Text("Select Machine Type"),
                         ),
                       ),
                     ),
@@ -309,8 +245,8 @@ class _RequestOrderScreenState extends State<RequestOrderScreen> {
                         textAlign: TextAlign.end,
                         decoration: const InputDecoration(
                           hintText: ' !اكتب استفسارك',
-                          contentPadding:
-                          EdgeInsets.symmetric(vertical: 20, horizontal: 15),
+                          contentPadding: EdgeInsets.symmetric(
+                              vertical: 20, horizontal: 15),
                           border: OutlineInputBorder(),
                         ),
                       ),
@@ -322,30 +258,39 @@ class _RequestOrderScreenState extends State<RequestOrderScreen> {
 
                     ConditionalBuilder(
                       condition: state is! RequestLoadingState,
-                      builder: (context) =>
-                          defaultButton(
-                            onPressed: () {
-                              if(_formKey.currentState!.validate())
-                              {
-                                final city = _cityValue.toString();
-                                final school = _schoolValue.toString();
-                                final machine = _machineValue.toString();
-                                final machineType = _machineTypeValue.toString();
-                                final consultation = consultationController.text;
+                      builder: (context) => defaultButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            final city = _city.toString();
+                            final school = _school.toString();
+                            final machine = _machine.toString();
+                            final machineType = _machineType.toString();
+                            final consultation = consultationController.text;
 
-                                RequestCubit.get(context).userRequest(
-                                  city: city,
-                                  school: school,
-                                  machine: machine,
-                                  machineType: machineType,
-                                  consultation: consultation,
-                                );
-                              }
-                            },
-                            text: 'Done',
-                          ),
+                            RequestCubit.get(context).userRequest(
+                              city: city.toString(),
+                              school: school.toString(),
+                              machine: machine.toString(),
+                              machineType: machineType.toString(),
+                              consultation: consultation.toString(),
+                            );
+                            _cityValue = 0;
+                            _schoolValue = 0;
+                            _machineValue = 0;
+                            _machineTypeValue = 0;
+                            consultationController.text = '';
+                            showToast(
+                              message:
+                                  'Request To Maintenance Sent Successfully',
+                              state: ToastStates.SUCCESS,
+                            );
+                          }
+                        },
+                        text: 'Done',
+                        backgroundColor: AppCubit.get(context).isDark ? Colors.deepOrange : Colors.blue,
+                      ),
                       fallback: (context) =>
-                      const Center(child: CircularProgressIndicator()),
+                          const Center(child: CircularProgressIndicator()),
                     ),
                   ],
                 ),

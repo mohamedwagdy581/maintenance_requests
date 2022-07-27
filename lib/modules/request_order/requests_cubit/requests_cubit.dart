@@ -33,7 +33,7 @@ class RequestCubit extends Cubit<RequestStates>
         machine: machine,
         uId: value.id.toString(),
         machineType: machineType.toString(),
-        consultation: '',
+        consultation: consultation.toString(),
         //isEmailVerified: value.user!.emailVerified.toString(),
       );
     }).catchError((error)

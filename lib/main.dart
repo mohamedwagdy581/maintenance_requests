@@ -16,6 +16,7 @@ void main() async {
   await Firebase.initializeApp();
   DioHelper.init();
   await CashHelper.init();
+  bool? isDark = CashHelper.getData(key: 'isDark');
 
   Widget widget;
   uId = CashHelper.getData(key: 'uId');
@@ -29,18 +30,18 @@ void main() async {
   }
 
   runApp(MyApp(
-    //isDark: isDark,
+    isDark: isDark,
     startWidget: widget,
   ));
 }
 
 class MyApp extends StatelessWidget {
-  //final bool? isDark;
+  final bool? isDark;
   final Widget startWidget;
 
   const MyApp({
     super.key,
-    // required this.isDark,
+    required this.isDark,
     required this.startWidget,
   });
 
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => AppCubit()..getUserData(),
+      create: (BuildContext context) => AppCubit()..getUserData()..changeAppModeTheme(fromShared: isDark,),
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (BuildContext context, AppStates state) {},
         builder: (BuildContext context, AppStates state) {
@@ -56,8 +57,7 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             theme: lightTheme,
             darkTheme: darkTheme,
-            // themeMode:
-            // AppCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
+            themeMode: AppCubit.get(context).isDark ? ThemeMode.dark : ThemeMode.light,
             home: startWidget,
           );
         },
