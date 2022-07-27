@@ -22,3 +22,6 @@ class CreateRequestErrorState extends RequestStates
   CreateRequestErrorState(this.error);
 }
 
+// Change Mode Theme of App
+class AppChangeModeThemeState extends RequestStates {}
+
