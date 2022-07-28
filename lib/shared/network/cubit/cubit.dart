@@ -55,6 +55,7 @@ class AppCubit extends Cubit<AppStates>
     {
       print(error.toString());
       emit(AppGetUserErrorState(error.toString()));
+
     });
   }
 

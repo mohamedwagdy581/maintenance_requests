@@ -22,33 +22,6 @@ class HomeLayout extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: Text(cubit.appBarTitle[cubit.currentIndex]),
-            actions: [
-              Row(
-                children: [
-                  Text(
-                      AppCubit.get(context).isDark
-                          ? 'Dark'
-                          : 'Light',
-                    style: Theme.of(context).textTheme.bodyText1,
-                  ),
-                  const SizedBox(
-                    width: 10.0,
-                  ),
-                  IconButton(
-                    onPressed: ()
-                    {
-                      AppCubit.get(context).changeAppModeTheme();
-                    },
-                    icon: const Icon(
-                      Icons.brightness_4_outlined,
-                      size: 30.0,
-                    ),
-                    padding: const EdgeInsets.only(right: 20.0),
-                  ),
-
-                ],
-              ),
-            ],
           ),
           // **************************  The Drawer  ***************************
           drawer: Drawer(
@@ -67,7 +40,9 @@ class HomeLayout extends StatelessWidget {
                       ),
                     ),
                   ),
-                  decoration: const BoxDecoration(color: Colors.blue),
+                  decoration: const BoxDecoration(
+                      color: Colors.blue,
+                  ),
                 ),
 
                 // Body
@@ -76,7 +51,9 @@ class HomeLayout extends StatelessWidget {
                     navigateAndFinish(context, const HomeLayout());
                   },
                   child: const ListTile(
-                    title: Text('Home Page'),
+                    title: Text(
+                        'Home Page',
+                    ),
                     leading: Icon(
                       Icons.home,
                       color: Colors.green,

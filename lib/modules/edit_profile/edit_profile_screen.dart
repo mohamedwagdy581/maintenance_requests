@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_maintenance/shared/components/components.dart';
+import 'package:flutter_maintenance/shared/components/constants.dart';
 import 'package:flutter_maintenance/shared/network/cubit/states.dart';
 import 'package:flutter_maintenance/style/custom_icons.dart';
 
@@ -16,6 +18,7 @@ class EditProfileScreen extends StatelessWidget {
   late var nameController = TextEditingController();
   late var phoneController = TextEditingController();
   late var bioController = TextEditingController();
+
   final CollectionReference users =
       FirebaseFirestore.instance.collection('users');
 
@@ -56,14 +59,18 @@ class EditProfileScreen extends StatelessWidget {
                 );
               } else {
                 final List storeDocs = [];
-                snapshot.data!.docs.map((DocumentSnapshot documentSnapshot) {
-                  Map users = documentSnapshot.data() as Map<String, dynamic>;
+                snapshot.data!.docs.map((DocumentSnapshot document) {
+                  Map<String, dynamic> users = document.data()! as Map<String, dynamic>;
                   storeDocs.add(users);
-                  users['uId'] = documentSnapshot.id;
+                  users['uId'] = document.id;
+
                 }).toList();
 
                 final DocumentSnapshot documentSnapshot =
                     snapshot.data!.docs.first;
+
+                final userData = FirebaseAuth.instance.currentUser;
+
                 return SingleChildScrollView(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -84,24 +91,26 @@ class EditProfileScreen extends StatelessWidget {
                                       SizedBox(
                                         height: 150.0,
                                         width: double.infinity,
-                                        child: AppCubit.get(context).coverImage !=
+                                        child: AppCubit.get(context)
+                                                    .coverImage !=
                                                 null
                                             ? Image(
-                                              image: FileImage(
-                                                AppCubit.get(context)
-                                                    .coverImage!,
-                                              ),
-                                              fit: BoxFit.cover,
-                                            )
+                                                image: FileImage(
+                                                  AppCubit.get(context)
+                                                      .coverImage!,
+                                                ),
+                                                fit: BoxFit.cover,
+                                              )
                                             : Image(
-                                              image: NetworkImage(
-                                                  storeDocs.first['cover']),
-                                              fit: BoxFit.cover,
-                                            ),
+                                                image: NetworkImage(
+                                                    documentSnapshot['cover']),
+                                                fit: BoxFit.cover,
+                                              ),
                                       ),
                                       IconButton(
                                         onPressed: () {
-                                          AppCubit.get(context).pickCoverImage();
+                                          AppCubit.get(context)
+                                              .pickCoverImage();
                                         },
                                         icon: const CircleAvatar(
                                           radius: 20.0,
@@ -123,7 +132,8 @@ class EditProfileScreen extends StatelessWidget {
                                           .scaffoldBackgroundColor,
                                       child: CircleAvatar(
                                         radius: 60.0,
-                                        child: AppCubit.get(context).profileImage !=
+                                        child: AppCubit.get(context)
+                                                    .profileImage !=
                                                 null
                                             ? CircleAvatar(
                                                 radius: 60.0,
@@ -134,13 +144,14 @@ class EditProfileScreen extends StatelessWidget {
                                             : CircleAvatar(
                                                 radius: 60.0,
                                                 backgroundImage: NetworkImage(
-                                                    storeDocs.first['image']),
+                                                    documentSnapshot['image']),
                                               ),
                                       ),
                                     ),
                                     IconButton(
                                       onPressed: () {
-                                        AppCubit.get(context).pickProfileImage();
+                                        AppCubit.get(context)
+                                            .pickProfileImage();
                                       },
                                       icon: const CircleAvatar(
                                         radius: 20.0,
@@ -160,14 +171,14 @@ class EditProfileScreen extends StatelessWidget {
                             height: 5.0,
                           ),
                           Text(
-                            storeDocs.last['name'],
+                            '${userData?.email.toString()}',
                             style: Theme.of(context).textTheme.bodyText1,
                           ),
                           const SizedBox(
                             height: 5.0,
                           ),
                           Text(
-                            storeDocs.last['bio'],
+                            documentSnapshot['bio'],
                             style: Theme.of(context).textTheme.caption,
                           ),
                           const SizedBox(
@@ -257,7 +268,18 @@ class EditProfileScreen extends StatelessWidget {
                               );
                             },
                             text: 'Update',
-                            backgroundColor: AppCubit.get(context).isDark ? Colors.deepOrange : Colors.blue,
+                            backgroundColor: AppCubit.get(context).isDark
+                                ? Colors.deepOrange
+                                : Colors.blue,
+                          ),
+                          defaultTextButton(
+                            onPressed: ()
+                            {
+                              //print(storeDocs.toString());
+                              print(documentSnapshot.data()!);
+
+                            },
+                            text: 'test',
                           ),
                         ],
                       ),

@@ -22,6 +22,10 @@ ThemeData darkTheme = ThemeData(
       fontWeight: FontWeight.bold,
     ),
   ),
+  drawerTheme: DrawerThemeData(
+    backgroundColor: HexColor('333739'),
+
+  ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     type: BottomNavigationBarType.fixed,
     elevation: 20.0,

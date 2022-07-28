@@ -246,8 +246,11 @@ class _RequestOrderScreenState extends State<RequestOrderScreen> {
                         decoration: const InputDecoration(
                           hintText: ' !اكتب استفسارك',
                           contentPadding: EdgeInsets.symmetric(
-                              vertical: 20, horizontal: 15),
-                          border: OutlineInputBorder(),
+                              vertical: 20, horizontal: 15,
+                          ),
+                          border: OutlineInputBorder(borderSide: BorderSide(
+                            color: Colors.red,
+                          )),
                         ),
                       ),
                     ),

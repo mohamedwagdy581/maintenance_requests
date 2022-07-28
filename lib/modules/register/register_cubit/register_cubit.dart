@@ -39,6 +39,7 @@ class RegisterCubit extends Cubit<RegisterStates>
         cover: '',
         //isEmailVerified: value.user!.emailVerified.toString(),
       );
+
     }).catchError((error)
     {
       emit(RegisterErrorState(error.toString()));
