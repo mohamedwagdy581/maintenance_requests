@@ -239,8 +239,9 @@ class _RequestOrderScreenState extends State<RequestOrderScreen> {
                         controller: consultationController,
                         textDirection: TextDirection.rtl,
                         maxLines: 5,
-                        style: const TextStyle(
-                          fontSize: 20.0,
+                        style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                          color:
+                          AppCubit.get(context).isDark ? Colors.white : Colors.black,
                         ),
                         textAlign: TextAlign.end,
                         decoration: const InputDecoration(

@@ -3,6 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 ThemeData darkTheme = ThemeData(
+  inputDecorationTheme: const InputDecorationTheme(
+      border: OutlineInputBorder(
+          borderSide: BorderSide(
+            color: Colors.white,
+          ),
+      ),
+  ),
   primarySwatch: Colors.deepOrange,
   scaffoldBackgroundColor: HexColor('333739'),
   appBarTheme: AppBarTheme(
@@ -40,9 +47,17 @@ ThemeData darkTheme = ThemeData(
       color: Colors.white,
     ),
   ),
+  hintColor: Colors.white,
 );
 
 ThemeData lightTheme = ThemeData(
+  inputDecorationTheme: const InputDecorationTheme(
+    border: OutlineInputBorder(
+      borderSide: BorderSide(
+        color: Colors.black,
+      )
+    )
+  ),
   primarySwatch: Colors.blue,
   scaffoldBackgroundColor: Colors.white,
   appBarTheme: const AppBarTheme(
@@ -75,4 +90,5 @@ ThemeData lightTheme = ThemeData(
       color: Colors.black,
     ),
   ),
+  hintColor: Colors.black,
 );

@@ -5,6 +5,7 @@ import 'package:flutter_maintenance/layout/home_layout.dart';
 import 'package:flutter_maintenance/modules/login/login_screen.dart';
 import 'package:flutter_maintenance/modules/register/register_cubit/register_cubit.dart';
 import 'package:flutter_maintenance/modules/register/register_cubit/register_states.dart';
+import 'package:flutter_maintenance/shared/network/cubit/cubit.dart';
 
 import '../../shared/components/components.dart';
 
@@ -67,7 +68,9 @@ class RegisterScreen extends StatelessWidget {
                               .of(context)
                               .textTheme
                               .bodyText1
-                              ?.copyWith(color: Colors.grey),
+                              ?.copyWith(
+                            color: Colors.grey,
+                          ),
                         ),
 
                         const SizedBox(
@@ -79,6 +82,10 @@ class RegisterScreen extends StatelessWidget {
                           controller: nameController,
                           keyboardType: TextInputType.name,
                           label: 'Name',
+                          textStyle: Theme.of(context).textTheme.subtitle1?.copyWith(
+                            color:
+                            AppCubit.get(context).isDark ? Colors.white : Colors.black,
+                          ),
                           validator: (String? value) {
                             if(value!.isEmpty)
                             {
@@ -99,6 +106,10 @@ class RegisterScreen extends StatelessWidget {
                           controller: emailController,
                           keyboardType: TextInputType.emailAddress,
                           label: 'Email Address',
+                          textStyle: Theme.of(context).textTheme.subtitle1?.copyWith(
+                            color:
+                            AppCubit.get(context).isDark ? Colors.white : Colors.black,
+                          ),
                           validator: (String? value) {
                             if(value!.isEmpty)
                             {
@@ -119,6 +130,10 @@ class RegisterScreen extends StatelessWidget {
                           controller: phoneController,
                           keyboardType: TextInputType.emailAddress,
                           label: 'Phone',
+                          textStyle: Theme.of(context).textTheme.subtitle1?.copyWith(
+                            color:
+                            AppCubit.get(context).isDark ? Colors.white : Colors.black,
+                          ),
                           validator: (String? value) {
                             if(value!.isEmpty)
                             {
@@ -139,6 +154,10 @@ class RegisterScreen extends StatelessWidget {
                           controller: passwordController,
                           keyboardType: TextInputType.visiblePassword,
                           label: 'Password',
+                          textStyle: Theme.of(context).textTheme.subtitle1?.copyWith(
+                            color:
+                            AppCubit.get(context).isDark ? Colors.white : Colors.black,
+                          ),
                           validator: (String? value) {
                             if(value!.isEmpty)
                             {
@@ -178,6 +197,8 @@ class RegisterScreen extends StatelessWidget {
                                   }
                                 },
                                 text: 'Register',
+                                backgroundColor:
+                                AppCubit.get(context).isDark ? Colors.deepOrange : Colors.blue,
                               ),
                           fallback: (context) =>
                           const Center(child: CircularProgressIndicator()),
@@ -192,12 +213,16 @@ class RegisterScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
+                            Text(
                               'Have an account?',
+                              style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                                color:
+                                AppCubit.get(context).isDark ? Colors.white : Colors.black,
+                              ),
                             ),
                             defaultTextButton(
                               onPressed: () {
-                                navigateTo(
+                                navigateAndFinish(
                                   context,
                                   LoginScreen(),
                                 );

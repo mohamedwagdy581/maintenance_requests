@@ -1,6 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_maintenance/modules/edit_profile/edit_profile_screen.dart';
+import 'package:flutter_maintenance/profile/profile_screen.dart';
 import 'package:flutter_maintenance/shared/network/cubit/states.dart';
 import 'package:flutter_maintenance/style/custom_icons.dart';
 
@@ -18,6 +19,7 @@ class HomeLayout extends StatelessWidget {
       builder: (BuildContext context, state) {
 
         var cubit = AppCubit.get(context);
+        var user = FirebaseAuth.instance.currentUser;
 
         return Scaffold(
           appBar: AppBar(
@@ -29,16 +31,13 @@ class HomeLayout extends StatelessWidget {
               children: <Widget>[
                 // Header
                 UserAccountsDrawerHeader(
-                  accountName: const Text('Mohamed Wagdy'),
-                  accountEmail: const Text('Mohamed@gmail.com'),
-                  currentAccountPicture: GestureDetector(
-                    child: const CircleAvatar(
-                      backgroundColor: Colors.grey,
-                      child: Icon(
-                        Icons.person,
-                        color: Colors.white,
-                      ),
-                    ),
+                  accountName: Text('${user!.displayName}'),
+                  accountEmail: Text('${user.email}'),
+                  currentAccountPicture: CircleAvatar(
+                    radius: 80.0,
+                    backgroundColor: Theme.of(context)
+                        .scaffoldBackgroundColor,
+                    backgroundImage: const NetworkImage('https://img.freepik.com/free-photo/wow-sale-there-amazed-redhead-girl-pointing-left-being-impressed-by-sale-announcement-showing-logo-standing-tshirt-against-white-background_176420-49239.jpg?t=st=1656577210~exp=1656577810~hmac=cc1cccdcd74eead3c597ae7f55984de886bf8c710457355ac173fc0a9ca3c542&w=1380'),
                   ),
                   decoration: const BoxDecoration(
                       color: Colors.blue,
@@ -63,7 +62,7 @@ class HomeLayout extends StatelessWidget {
 
                 InkWell(
                   onTap: () {
-                    navigateTo(context, EditProfileScreen());
+                    navigateTo(context, const ProfileScreen());
                   },
                   child: const ListTile(
                     title: Text('My_Account'),
@@ -77,7 +76,8 @@ class HomeLayout extends StatelessWidget {
                 const Divider(),
 
                 InkWell(
-                  onTap: () {},
+                  onTap: ()
+                  {},
                   child: const ListTile(
                     title: Text('About'),
                     leading: Icon(

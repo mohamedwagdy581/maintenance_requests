@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_maintenance/shared/network/cubit/cubit.dart';
 import 'package:flutter_maintenance/shared/network/local/cash_helper.dart';
 
 import '../../layout/home_layout.dart';
@@ -95,6 +96,10 @@ class LoginScreen extends StatelessWidget {
                           controller: emailController,
                           keyboardType: TextInputType.emailAddress,
                           label: 'Email Address',
+                          textStyle: Theme.of(context).textTheme.subtitle1?.copyWith(
+                            color:
+                              AppCubit.get(context).isDark ? Colors.white : Colors.black,
+                          ),
                           validator: (String? value) {
                             if(value!.isEmpty)
                             {
@@ -115,6 +120,10 @@ class LoginScreen extends StatelessWidget {
                           controller: passwordController,
                           keyboardType: TextInputType.visiblePassword,
                           label: 'Password',
+                          textStyle: Theme.of(context).textTheme.subtitle1?.copyWith(
+                            color:
+                            AppCubit.get(context).isDark ? Colors.white : Colors.black,
+                          ),
                           validator: (String? value) {
                             if(value!.isEmpty)
                             {
@@ -150,6 +159,8 @@ class LoginScreen extends StatelessWidget {
                                   }
                                 },
                                 text: 'Login',
+                                backgroundColor:
+                                  AppCubit.get(context).isDark ? Colors.deepOrange : Colors.blue,
                               ),
                           fallback: (context) =>
                           const Center(child: CircularProgressIndicator()),
@@ -164,12 +175,16 @@ class LoginScreen extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const Text(
+                            Text(
                               'Don\'t have an account?',
+                              style: Theme.of(context).textTheme.subtitle1?.copyWith(
+                                color:
+                                AppCubit.get(context).isDark ? Colors.white : Colors.black,
+                              ),
                             ),
                             defaultTextButton(
                               onPressed: () {
-                                navigateTo(
+                                navigateAndFinish(
                                   context,
                                   RegisterScreen(),
                                 );

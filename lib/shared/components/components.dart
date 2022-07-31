@@ -24,6 +24,7 @@ Widget defaultTextFormField({
   required TextEditingController? controller,
   required TextInputType keyboardType,
   required String? label,
+  TextStyle? textStyle,
   VoidCallback? onTap,
   required String? Function(String?)? validator,
   Function(String)? onSubmitted,
@@ -34,6 +35,7 @@ Widget defaultTextFormField({
   bool? isClickable,
 }) =>
     TextFormField(
+      style: textStyle,
       controller: controller,
       keyboardType: keyboardType,
       onTap: onTap,
@@ -124,4 +126,22 @@ Color? chooseToastColor(ToastStates state) {
       break;
   }
   return color;
+}
+
+Widget customListTile (
+{
+  required VoidCallback onTapped,
+  required String title,
+  Widget? leadingWidget,
+  Widget? trailingWidget,
+})
+{
+  return InkWell(
+    onTap: onTapped,
+    child: ListTile(
+      title: Text(title),
+      leading: leadingWidget,
+      trailing: trailingWidget,
+    ),
+  );
 }
