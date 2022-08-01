@@ -117,3 +117,30 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 }
+
+
+/*
+String coverImageUrl = '';
+  void pickUploadCoverImage() async
+  {
+    final image = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 512,
+      maxHeight: 512,
+      imageQuality: 75,
+    );
+    Reference reference = FirebaseStorage.instance.ref().child('coverpic.jpg');
+    await reference.putFile(File(image!.path));
+    reference.getDownloadURL().then((value)
+    {
+      profileImageUrl = value;
+      print(value);
+      emit(AppCoverImagePickedSuccessState());
+    }).catchError((error)
+    {
+      print(error.toString());
+      emit(AppCoverImagePickedErrorState());
+    });
+
+  }
+*/
