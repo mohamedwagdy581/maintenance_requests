@@ -67,10 +67,9 @@ class LoginScreen extends StatelessWidget {
                           style: Theme
                               .of(context)
                               .textTheme
-                              .headline4
+                              .bodyText1
                               ?.copyWith(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+                            fontSize: 35.0,
                           ),
                         ),
                         //SizedBox between Login Text and Login to Start Text

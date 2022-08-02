@@ -50,10 +50,8 @@ class RegisterScreen extends StatelessWidget {
                           style: Theme
                               .of(context)
                               .textTheme
-                              .headline4
-                              ?.copyWith(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
+                              .bodyText1?.copyWith(
+                            fontSize: 35.0,
                           ),
                         ),
 

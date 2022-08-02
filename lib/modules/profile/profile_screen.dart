@@ -16,6 +16,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Stream<QuerySnapshot> dataStream = FirebaseFirestore.instance.collection('users').snapshots();
     final userData = FirebaseAuth.instance.currentUser;
+    var cubit = AppCubit.get(context);
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {},
       builder: (context, state) {
@@ -46,6 +47,8 @@ class ProfileScreen extends StatelessWidget {
                     children: [
                       SizedBox(
                         height: 190.0,
+
+                        // ******************** Stack of Cover Image ********************
                         child: Stack(
                           alignment: AlignmentDirectional.bottomCenter,
                           children: [
@@ -57,27 +60,23 @@ class ProfileScreen extends StatelessWidget {
                                   SizedBox(
                                     height: 150.0,
                                     width: double.infinity,
-                                    child: AppCubit.get(context)
-                                        .coverImage !=
-                                        null
-                                        ? Image(
-                                      image: FileImage(
-                                        AppCubit.get(context)
-                                            .coverImage!,
+                                    child: cubit.coverImageUrl == ''
+                                        ? const Image(
+                                      image: NetworkImage(
+                                        'https://cdn.quotesgram.com/img/54/5/1828314355-ayat-kareema-islamic-fb-cover.png',
                                       ),
                                       fit: BoxFit.cover,
                                     )
                                         : Image(
                                       image: NetworkImage(
-                                          storeDocs.first['cover'],
+                                          cubit.coverImageUrl,
                                       ),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
                                   IconButton(
                                     onPressed: () {
-                                      AppCubit.get(context)
-                                          .pickCoverImage();
+                                      cubit.pickUploadCoverImage();
                                     },
                                     icon: const CircleAvatar(
                                       radius: 20.0,
@@ -90,6 +89,8 @@ class ProfileScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
+
+                            // ****************** Stack of Profile Image ********************
                             Stack(
                               alignment: AlignmentDirectional.bottomEnd,
                               children: [
@@ -99,25 +100,20 @@ class ProfileScreen extends StatelessWidget {
                                       .scaffoldBackgroundColor,
                                   child: CircleAvatar(
                                     radius: 60.0,
-                                    child: AppCubit.get(context)
-                                        .profileImage !=
-                                        null
-                                        ? CircleAvatar(
+                                    child: cubit.profileImageUrl == ''
+                                        ? const CircleAvatar(
                                       radius: 60.0,
-                                      backgroundImage: FileImage(
-                                          AppCubit.get(context)
-                                              .profileImage!),
+                                      backgroundImage: NetworkImage('https://icons-for-free.com/iconfiles/png/512/person-1324760545186718018.png'),
                                     )
                                         : CircleAvatar(
                                       radius: 60.0,
-                                      backgroundImage: NetworkImage(storeDocs.first['image']),
+                                      backgroundImage: NetworkImage(cubit.profileImageUrl),
                                     ),
                                   ),
                                 ),
                                 IconButton(
                                   onPressed: () {
-                                    AppCubit.get(context)
-                                        .pickProfileImage();
+                                    cubit.pickUploadProfileImage();
                                   },
                                   icon: const CircleAvatar(
                                     radius: 20.0,

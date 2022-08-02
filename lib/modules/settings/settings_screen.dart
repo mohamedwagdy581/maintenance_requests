@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_maintenance/profile/profile_screen.dart';
+import 'package:flutter_maintenance/modules/profile/profile_screen.dart';
 import 'package:flutter_maintenance/shared/network/cubit/cubit.dart';
 import 'package:flutter_maintenance/style/custom_icons.dart';
 
