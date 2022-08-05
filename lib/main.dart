@@ -17,6 +17,7 @@ void main() async {
   DioHelper.init();
   await CashHelper.init();
   bool? isDark = CashHelper.getData(key: 'isDark');
+  profileImage = CashHelper.getData(key: 'imagePath');
 
   Widget widget;
   uId = CashHelper.getData(key: 'uId');
@@ -31,17 +32,20 @@ void main() async {
 
   runApp(MyApp(
     isDark: isDark,
+    loadImage: profileImage,
     startWidget: widget,
   ));
 }
 
 class MyApp extends StatelessWidget {
   final bool? isDark;
+  final String? loadImage;
   final Widget startWidget;
 
   const MyApp({
     super.key,
     required this.isDark,
+    required this.loadImage,
     required this.startWidget,
   });
 
@@ -49,7 +53,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (BuildContext context) => AppCubit()..getUserData()..changeAppModeTheme(fromShared: isDark,),
+      create: (BuildContext context) => AppCubit()..getUserData()..changeAppModeTheme(fromShared: isDark,)..getAllUsers(),
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (BuildContext context, AppStates state) {},
         builder: (BuildContext context, AppStates state) {

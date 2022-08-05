@@ -13,7 +13,9 @@ void signOut(context) {
   });
 }
 
-String? uId = '';
+String uId = '';
+
+String profileImage = '';
 
 // void printFullText(String text) {
 //   final pattern = RegExp('.{1,800}');

@@ -2,7 +2,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_maintenance/layout/home_layout.dart';
+import 'package:flutter_maintenance/modules/settings/settings_screen.dart';
 import 'package:flutter_maintenance/shared/components/components.dart';
+import 'package:flutter_maintenance/shared/components/constants.dart';
+import 'package:flutter_maintenance/shared/network/local/cash_helper.dart';
 import 'package:flutter_maintenance/style/custom_icons.dart';
 
 import '../../shared/network/cubit/cubit.dart';
@@ -23,6 +27,18 @@ class ProfileScreen extends StatelessWidget {
         return Scaffold(
           appBar: AppBar(
             title: const Text('Profile'),
+            actions: [
+              defaultTextButton(
+                onPressed: ()
+                {
+                  //CashHelper.saveData(key: 'imagePath', value: cubit.profileImage!.path.toString());
+                  //navigateAndFinish(context, const HomeLayout());
+                  //print(profileImage.toString());
+                  //print(cubit.userModel!.name);
+                },
+                text: 'Save',
+              ),
+            ],
           ),
           body: StreamBuilder<QuerySnapshot> (
             stream: dataStream,

@@ -18,11 +18,20 @@ class AppGetUserErrorState extends AppStates
   AppGetUserErrorState(this.error);
 }
 
+// App Get All User State
+class AppGetAllUserLoadingState extends AppStates {}
+
+class AppGetAllUserSuccessState extends AppStates {}
+
+class AppGetAllUserErrorState extends AppStates
+{
+  final String error;
+
+  AppGetAllUserErrorState(this.error);
+}
+
 // Change Mode Theme of App
 class AppChangeModeThemeState extends AppStates {}
-
-// Change CityDropDown State
-class AppChangeCityDropDownState extends AppStates {}
 
 // Profile Image Picked States
 class AppProfileImagePickedSuccessState extends AppStates {}

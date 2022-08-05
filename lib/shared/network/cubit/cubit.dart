@@ -1,7 +1,8 @@
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:flutter_maintenance/models/user_model.dart';
 import 'package:flutter_maintenance/modules/chat/chat_screen.dart';
 import 'package:flutter_maintenance/modules/request_order/request_order_screen.dart';
@@ -53,56 +54,27 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  File? profileImage;
-
-  Future pickProfileImage() async {
-    try {
-      final image = await ImagePicker().pickImage(
-          source: ImageSource.gallery,
-        maxHeight: 512,
-        maxWidth: 512,
-        imageQuality: 75,
-      );
-      Reference reference = FirebaseStorage.instance.ref().child('profilepic.jpg');
-      if (image == null) {
-        print('No Image Selected!');
-        emit(AppProfileImagePickedErrorState());
-        return;
-      } else {
-        await reference.putFile(File(image.path));
-        reference.getDownloadURL().then((value)
-        {
-          print(value);
-        });
-        final imageTemporary = File(image.path);
-        profileImage = imageTemporary;
-        emit(AppProfileImagePickedSuccessState());
-      }
-    } on PlatformException catch (error) {
-      print('Failed to pick image ${error.toString()}');
-    }
+  List<UserModel> users = [];
+  void getAllUsers ()
+  {
+    FirebaseFirestore.instance.collection('users').get().then((value)
+    {
+      value.docs.forEach((element)
+      {
+        users.add(UserModel.fromJson(element.data()));
+        print(users);
+        emit(AppGetAllUserSuccessState());
+      });
+    }).catchError((error)
+    {
+      print(error.toString());
+      emit(AppGetAllUserErrorState(error));
+    });
   }
 
-  File? coverImage;
-
-  Future pickCoverImage() async {
-    try {
-      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (image == null) {
-        print('No Image Selected!');
-        emit(AppCoverImagePickedErrorState());
-        return;
-      } else {
-        final imageTemporary = File(image.path);
-        coverImage = imageTemporary;
-        emit(AppCoverImagePickedSuccessState());
-      }
-    } on PlatformException catch (error) {
-      print('Failed to pick image ${error.toString()}');
-    }
-  }
 
   // ProfilePickedImage
+  //XFile? profileImage;
   String profileImageUrl = '';
   void pickUploadProfileImage() async
   {
@@ -112,11 +84,13 @@ class AppCubit extends Cubit<AppStates> {
       maxHeight: 512,
       imageQuality: 75,
     );
+    final imagePermanent = await saveImagePermanently(image!.path);
     Reference reference = FirebaseStorage.instance.ref().child('profilepic.jpg');
-    await reference.putFile(File(image!.path));
+    await reference.putFile(File(image.path));
     reference.getDownloadURL().then((value)
     {
       profileImageUrl = value;
+      CashHelper.saveData(key: profileImage, value: imagePermanent.path);
       print(value);
       emit(AppProfileImagePickedSuccessState());
     }).catchError((error)
@@ -125,6 +99,14 @@ class AppCubit extends Cubit<AppStates> {
       emit(AppProfileImagePickedErrorState());
     });
 
+  }
+  // To Store Image in Directory Path
+  Future<File> saveImagePermanently(String imagePath) async
+  {
+    final directory = await getApplicationDocumentsDirectory();
+    final name = basename(imagePath);
+    final image = File('${directory.path}/$name');
+    return File(imagePath).copy(image.path);
   }
 
   // Cover Picked image
@@ -166,31 +148,6 @@ class AppCubit extends Cubit<AppStates> {
       });
     }
   }
+
+
 }
-
-
-/*
-String coverImageUrl = '';
-  void pickUploadCoverImage() async
-  {
-    final image = await ImagePicker().pickImage(
-      source: ImageSource.gallery,
-      maxWidth: 512,
-      maxHeight: 512,
-      imageQuality: 75,
-    );
-    Reference reference = FirebaseStorage.instance.ref().child('coverpic.jpg');
-    await reference.putFile(File(image!.path));
-    reference.getDownloadURL().then((value)
-    {
-      profileImageUrl = value;
-      print(value);
-      emit(AppCoverImagePickedSuccessState());
-    }).catchError((error)
-    {
-      print(error.toString());
-      emit(AppCoverImagePickedErrorState());
-    });
-
-  }
-*/
